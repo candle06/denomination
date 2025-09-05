@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초명신교 교단</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;700&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: radial-gradient(circle at center, #1a1000, #000);
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  font-family: 'Cinzel Decorative', cursive;
+  padding: 20px;
+  text-align: center;
+  font-size: 2.8rem;
+  color: #FFD700;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow:0 0 5px #FFD700,0 0 10px #FFA500; }
+  to { text-shadow:0 0 20px #FFD700,0 0 40px #FFA500; }
+}
+
+/* 카드 컨테이너 가로 정렬 */
+.card-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  overflow-x: auto; /* 가로 스크롤 가능 */
+  width: 90%;
+  max-width: 1000px;
+}
+
+/* 스크롤바 숨기기 */
+.card-container {
+  display: flex;
+  flex-direction: column; /* 🔥 세로 배치 */
+  gap: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 700px; /* 카드 전체 폭 제한 */
+  margin: auto;
+  overflow-x: hidden; /* 가로 스크롤 제거 */
+}
+
+.card {
+  min-width: auto;      /* 🔥 고정 폭 대신 자동 */
+  width: 100%;          /* 카드가 컨테이너 꽉 채움 */
+  height: auto;         /* 필요에 따라 높이 늘어남 */
+}
+
+.card {
+  background: rgba(50,25,0,0.85);
+  border: 2px solid #FFD700;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow:0 0 20px rgba(255,215,0,0.6);
+  transform: scale(0.9);
+  opacity:0;
+  animation: fadeInUp 1s forwards;
+  cursor: pointer;
+  transition: transform 0.2s;
+  min-width: 250px; /* 카드 최소 너비 */
+  flex: 0 0 auto;
+}
+.card:hover { transform: scale(1.05); }
+
+.card:nth-child(1){animation-delay:0.3s;}
+.card:nth-child(2){animation-delay:0.6s;}
+.card:nth-child(3){animation-delay:0.9s;}
+
+@keyframes fadeInUp {
+  from{opacity:0; transform:translateY(50px) scale(0.9);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
+
+.card h2 {
+  font-family: 'Cinzel Decorative', cursive;
+  margin-bottom:10px;
+  color:#FFD700;
+  text-shadow:0 0 5px #FFD700;
+  font-size:1.7rem;
+}
+
+.card p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size:1.1rem;
+  color:#FFEFD5;
+  line-height:1.5;
+}
+
+footer {
+  margin-top:40px;
+  font-size:0.9rem;
+  color:#ccc;
+  text-align:center;
+  padding:20px;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* 모달 */
+.modal {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+  animation: fadeIn 0.5s forwards;
+}
+
+.modal-content {
+  background: rgba(50,25,0,0.95);
+  border:2px solid #FFD700;
+  border-radius:15px;
+  padding:30px;
+  max-width:600px;
+  max-height:90vh;   /* 화면 높이 90% */
+  overflow-y:auto;   /* 세로 스크롤 */
+  text-align:left;
+  box-shadow:0 0 40px #FFD700;
+  animation: popIn 0.5s forwards;
+}
+
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes popIn{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+.modal h2 {
+  font-family:'Cinzel Decorative', cursive;
+  color:#FFD700;
+  margin-bottom:15px;
+  text-shadow:0 0 5px #FFD700;
+  text-align:center;
+}
+
+.modal p, .modal li {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.1rem;
+  color:#FFEFD5;
+  margin-bottom:10px;
+  line-height:1.6;
+}
+
+.modal ul { padding-left:20px; }
+
+.close {
+  background:#FFD700;
+  border:none;
+  color:#000;
+  padding:10px 20px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:1rem;
+  transition: background 0.3s;
+  font-family:'Cormorant Garamond', serif;
+  display:block;
+  margin:20px auto 0 auto;
+}
+.close:hover{background:#FFA500;}
+
+/* 별 */
+.stars{
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background:transparent; overflow:hidden; z-index:-1;
+}
+.star{
+  position:absolute;
+  width:2px; height:2px;
+  background:#FFD700;
+  border-radius:50%;
+  animation:twinkle 3s infinite ease-in-out alternate;
+}
+@keyframes twinkle{
+  from{opacity:0.2; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1.5);}
+}
+</style>
+</head>
+<body>
+<header>초명신교 교단</header>
+
+<div class="card-container">
+  <div class="card" data-modal="modal-text">
+    <h2>📜 여명서(黎明書)</h2>
+    <p>교단의 창세와 신화, 교리, 인물들을 담은 신성문서</p>
+  </div>
+
+  <div class="card" data-modal="modal-origin">
+    <h2>🏛️ 기원과 창시자</h2>
+    <p>교단의 시작과 창시자, 역사적 기록</p>
+  </div>
+
+  <div class="card" data-modal="modal-traits">
+    <h2>✨ 초명신교 특징</h2>
+    <p>교단의 교리, 신앙 구조, 신수와 교주</p>
+  </div>
+</div>
+
+<footer>© 초명신교</footer>
+<div class="stars"></div>
+
+<!-- 모달: 여명서 -->
+<div class="modal" id="modal-text">
+  <div class="modal-content">
+    <h2>📜 여명서(黎明書)</h2>
+    <!-- 여명서 내용 -->
+    <p><strong>제1장 — 태초의 새벽신</strong></p>
+    <p>1. 태초에 아무것도 없었다.<br>빛도, 어둠도, 생명도, 죽음도 없었고,<br>그저 “텅 빈 시간의 숨결”만이 메아리쳤다.</p>
+    <p>2. 그 고요의 틈에서, 한 점 어둠이 떨며 속삭였다.<br>“나는 스스로 존재하는 부재, 나는 새벽이 되리라.”</p>
+    <p>3. 그리고 그 어둠은 자신을 찢어, 빛이라 불리는 허상을 만들었다.<br>그 빛이 ‘첫 새벽’이었다.</p>
+    <p>4. 사람들은 그 빛을 ‘희망’이라 부르고, 그 어둠을 ‘밤’이라 부르며 두려워했다.<br>그러나 그들은 몰랐다. 빛은 어둠의 심장에서 태어났음을.</p>
+    <p><strong>제2장 — 신의 형상과 두 신수</strong></p>
+    <p>1. 어둠에서 태어난 새벽은 형상을 가졌다. 그 눈은 백색이었고, 발은 무형이었으며, 숨결은 생명과 멸망을 동시에 품었다.</p>
+    <p>2. 그는 자기의 존재를 스스로 숨기고, ’새벽신(黎主)’이라 불리는 이름을 세상에 내렸다.</p>
+    <p>3. 그는 먼저 하얀 고양이, ‘여령(黎靈)’을 빚어냈다. 여령은 고요한 어둠을 걷는 자였고, 모든 진실을 꿰뚫는 눈을 가졌다.</p>
+    <p>4. 다음으로 그는 연한 갈색 강아지, ‘서온(曙溫)’을 토해냈다. 서온은 따뜻한 빛을 품었으나, 그 심장 깊숙한 곳엔 길들여지지 않은 어둠의 불씨가 남아 있었다.</p>
+    <p>5. 새벽신은 두 신수를 보내어 인간을 속였다. 여령은 하늘의 계시를, 서온은 땅의 위안을 가장했고, 사람들은 그들을 신의 대리자로 받아들였다.</p>
+    <p><strong>제3장 — 첫 축복과 교주의 탄생</strong></p>
+    <p>1. 그리하여, 새벽의 눈을 감지 못한 인간들 중 한 명이 선택받았다. 그는 스스로를 ‘빛의 사도’라 믿었으나 사실은 어둠의 도구였다.</p>
+    <p>2. 새벽신은 그에게 ‘첫 축복’을 내렸다. 여령의 침묵을, 서온의 숨결을, 그리고 자신의 그림자를.</p>
+    <p>3. 그 축복은 세 가지 형상을 가졌다.<br>– 환한 언어는 사람을 모으고<br>– 따스한 손길은 마음을 녹이며<br>– 침묵한 눈동자는 진실을 가린다.</p>
+    <p>4. 사람들은 그를 ‘교주’라 부르며 따랐고, 그는 미소를 지으며 처음으로 속삭였다.<br>“빛은 내가 쥔 어둠일 뿐이다.”</p>
+    <p><strong>제4장 — 계시</strong></p>
+    <p>1. 만물이 잠드는 시간, 빛은 흐려지고 어둠은 다시 눈을 뜬다.<br>그날, 백서의 눈에서 피가 흐르고 담서의 발에서 재가 떨어질 것이다.</p>
+    <p>2. 그때 새벽신은 다시 말하리라.<br>“나는 빛이 아니다. 나는 빛을 가장한 최초의 그림자. 나는 너희의 신이었다.”</p>
+    <p><strong>인물/직위</strong></p>
+    <p>레카리엘, 스라케온, 키므시오크, 히아리온, 예르미카엘, 바르다인</p>
+    <p>암종자, 여명인, 복음인, 결안자, 신수관, 안계자, 黎主(여주)</p>
+    <button class="close">닫기</button>
+  </div>
+</div>
+
+<!-- 모달: 기원과 창시자 -->
+<div class="modal" id="modal-origin">
+  <div class="modal-content">
+    <h2>🏛️ 기원과 창시자</h2>
+    <p><strong>창시자:</strong> 이명 불명. 문헌에서는 “서쪽에서 온 자(西來者)”로 기록됨</p>
+    <p><strong>시작:</strong> 1380년경, 고려말 사회혼란기에 비밀리에 전파</p>
+    <p><strong>기록:</strong> 조선 초기 학자 <strong>권문세(權文世)</strong>의 《기문유사(奇聞類史)》에 등장</p>
+    <p><strong>이름:</strong> 초명신교 (初明神敎)<br>
+    <strong>의미:</strong> “처음 밝아온 빛의 신을 섬기는 교단”</p>
+    <p><strong>기원:</strong> 대략 14세기 말 ~ 16세기 초 (고려 말기 ~ 조선 초기)<br>
+    <strong>중심지:</strong> 조선 중남부 산악 지역 (실존지는 전해지지 않음)</p>
+    <button class="close">닫기</button>
+  </div>
+</div>
+
+<!-- 모달: 초명신교 특징 -->
+<div class="modal" id="modal-traits">
+  <div class="modal-content">
+    <h2>✨ 초명신교 특징</h2>
+    <p>겉으로는 ‘빛의 신’을 섬긴다 주장</p>
+    <p>실상은 “새벽이라는 위장된 어둠의 신”을 숭배</p>
+    <p>여령과 서온이라는 신령한 수호신 (그러나 실상은 악) 존재</p>
+    <p>계시와 예언, 침묵의 교리, 눈 모양의 상징 강조</p>
+    <p>교주는 <strong>黎主(여주)</strong>라 불리며 신의 화신이자 신의 빙의체</p>
+    <p>주요 신관직과 신도 구분:</p>
+    <ul>
+      <li><strong>암종자(暗種者):</strong> 신앙의 씨앗, 침묵 속 입문자</li>
+      <li><strong>여명인(黎明人):</strong> 처음 진리에 다가선 자</li>
+      <li><strong>복음인(復音人):</strong> 말 없이 가르치는 자</li>
+      <li><strong>결안자(結眼者):</strong> 눈을 떴으나 말하지 않는 자</li>
+      <li><strong>신수관(神獸官):</strong> 신수의 대리자</li>
+      <li><strong>안계자(眼啓者):</strong> 신의 그림자를 본 자</li>
+      <li><strong>黎主(여주):</strong> 신과 동일시된 자</li>
+    </ul>
+    <button class="close">닫기</button>
+  </div>
+</div>
+
+<script>
+const cards = document.querySelectorAll('.card');
+const modals = document.querySelectorAll('.modal');
+const closes = document.querySelectorAll('.close');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    const modalId = card.getAttribute('data-modal');
+    document.getElementById(modalId).style.display = 'flex';
+  });
+});
+
+closes.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.modal').style.display = 'none';
+  });
+});
+
+// 모달 외부 클릭 시 닫기
+modals.forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal){
+      modal.style.display = 'none';
+    }
+  });
+});
+
+// 별 랜덤 배치
+const starsContainer = document.querySelector('.stars');
+for(let i=0;i<100;i++){
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.top = Math.random()*100+'%';
+  star.style.left = Math.random()*100+'%';
+  star.style.width = star.style.height = (Math.random()*2+1)+'px';
+  star.style.animationDuration = (Math.random()*3+2)+'s';
+  starsContainer.appendChild(star);
+}
+</script>
+</body>
+</html>
